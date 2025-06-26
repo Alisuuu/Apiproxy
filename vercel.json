@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/filme/(.*)",
+      "dest": "/api/filme.js?slug=$1"
+    },
+    {
+      "src": "/serie/(.*)",
+      "dest": "/api/serie.js?slug=$1"
+    }
+  ]
+}
