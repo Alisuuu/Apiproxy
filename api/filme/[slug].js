@@ -8,22 +8,16 @@ module.exports = async (req, res) => {
     const response = await fetch(url, { redirect: 'follow' });
     let html = await response.text();
 
-    // Remove meta refresh
-    html = html.replace(/<meta[^>]*http-equiv=["']?refresh["'][^>]*>/gi, '');
+    // Bloqueia apenas detecção de sandbox/iframe
+    html = html
+      .replace(/window\.top\s*!==\s*window\.self/g, 'false')
+      .replace(/window\.self\s*!==\s*window\.top/g, 'false')
+      .replace(/self\s*!==\s*top/g, 'false')
+      .replace(/top\s*!==\s*self/g, 'false')
+      .replace(/window\.frameElement\s*!==\s*null/g, 'false')
+      .replace(/window\.frameElement/g, 'null');
 
-    // Bloqueia redirecionamentos JS
-    html = html.replace(/window(\.top)?\.location\s*=\s*["'][^"']+["'];?/gi, '// bloqueado');
-    html = html.replace(/location\.href\s*=\s*["'][^"']+["'];?/gi, '// bloqueado');
-
-    // Bloqueia detecção de sandbox/iframe
-    html = html.replace(/window\.top\s*!==\s*window\.self/g, 'false');
-    html = html.replace(/window\.self\s*!==\s*window\.top/g, 'false');
-    html = html.replace(/self\s*!==\s*top/g, 'false');
-    html = html.replace(/top\s*!==\s*self/g, 'false');
-    html = html.replace(/window\.frameElement\s*!==\s*null/g, 'false');
-    html = html.replace(/window\.frameElement/g, 'null');
-
-    // CSP e permissões máximas
+    // Cabeçalhos para permissões máximas
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'text/html');
     res.setHeader(
