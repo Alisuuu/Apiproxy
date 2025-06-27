@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
   const slug = req.query.slug;
-  const url = `https://superflixapi.lat/serie/${slug}`;
+  const url = `https://embed.warezcdn.com/serie/${slug}`;
 
   try {
     const response = await fetch(url, { redirect: 'follow' });
