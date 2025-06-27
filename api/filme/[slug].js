@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader(
       'Content-Security-Policy',
-      "default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src *; img-src * data: blob:; media-src *; frame-src *;"
+      ""
     );
 
     res.status(200).send(html);
