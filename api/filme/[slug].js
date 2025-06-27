@@ -1,22 +1,35 @@
-const fetch = require('node-fetch');
-
 module.exports = async (req, res) => {
   const slug = req.query.slug;
-  const url = `https://superflixapi.lat/filme/${slug}`;
+  const playerUrl = `https://superflixapi.lat/filme/${slug}`;
 
-  try {
-    const response = await fetch(url, { redirect: 'follow' });
-    const html = await response.text();
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <style>
+          html, body, iframe {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            overflow: hidden;
+            background: black;
+          }
+        </style>
+      </head>
+      <body>
+        <iframe
+          src="${playerUrl}"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </body>
+    </html>
+  `;
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'text/html');
-    res.setHeader(
-      'Content-Security-Policy',
-      "default-src * data: blob: filesystem: about: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; connect-src *; media-src *; img-src * data: blob:; frame-src *;"
-    );
-
-    res.status(200).send(html);
-  } catch (error) {
-    res.status(500).send('Erro ao carregar conteúdo do filme.');
-  }
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Content-Type", "text/html");
+  res.status(200).send(html);
 };
