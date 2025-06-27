@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
     <html>
       <head>
         <meta charset="utf-8" />
+        <title>Player - ${slug}</title>
         <style>
           html, body, iframe {
             margin: 0;
@@ -14,8 +15,8 @@ module.exports = async (req, res) => {
             width: 100%;
             height: 100%;
             border: none;
-            overflow: hidden;
             background: black;
+            overflow: hidden;
           }
         </style>
       </head>
@@ -24,6 +25,7 @@ module.exports = async (req, res) => {
           src="${playerUrl}"
           allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
           allowfullscreen
+          style="width: 100%; height: 100%; border: none;"
         ></iframe>
       </body>
     </html>
