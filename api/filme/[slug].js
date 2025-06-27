@@ -17,12 +17,14 @@ module.exports = async (req, res) => {
       .replace(/window\.frameElement\s*!==\s*null/g, 'false')
       .replace(/window\.frameElement/g, 'null');
 
-    // Cabeçalhos para permissões máximas
+    // Cabeçalhos com tudo liberado
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'text/html');
+
+    // Liberação máxima: remove CSP ou usa política ultra flexível
     res.setHeader(
       'Content-Security-Policy',
-      ""
+      "default-src * data: blob: filesystem: about: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; connect-src *; media-src *; img-src * data: blob:; frame-src *;"
     );
 
     res.status(200).send(html);
